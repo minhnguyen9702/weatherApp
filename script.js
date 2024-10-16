@@ -9,20 +9,33 @@ async function getWeather(searchTerm) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
-    const data = await response.json();
-    console.log(data);
+    const data = await response.sjson();
+    return processWeatherData(data);
   } catch (error) {
     console.error("Failed to fetch weather data:", error);
   }
 }
 
+function processWeatherData(weatherData) {
+  let resolvedAddress = weatherData.resolvedAddress;
+  let temperature = weatherData.currentConditions.temp;
+  let conditions = weatherData.currentConditions.conditions;
+
+  return {resolvedAddress, temperature, conditions};
+}
+
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 
-searchBtn.addEventListener("click", () => {
+searchBtn.addEventListener("click", async () => {
   const term = searchInput.value;
   if (term) {
-    getWeather(searchInput.value);
+    const weatherData = await getWeather(term);
+    if (weatherData) {
+        console.log(weatherData.resolvedAddress);
+        console.log(weatherData.temperature);
+        console.log(weatherData.conditions);
+    }
   } else {
     console.error("Please Enter a Valid Location");
   }
