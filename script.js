@@ -27,9 +27,9 @@ function processWeatherData(weatherData) {
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 
-const addressDiv = document.getElementById("resolvedAddress")
-const temperatureDiv = document.getElementById("temperatureDiv")
-const conditionsDiv = document.getElementById("conditionsDiv")
+const addressDiv = document.getElementById("resolvedAddress");
+const temperatureDiv = document.getElementById("temperatureDiv");
+const conditionsDiv = document.getElementById("conditionsDiv");
 
 searchBtn.addEventListener("click", async () => {
   const term = searchInput.value;
@@ -37,10 +37,28 @@ searchBtn.addEventListener("click", async () => {
     const weatherData = await getWeather(term);
     if (weatherData) {
       addressDiv.innerText = weatherData.resolvedAddress;
-      temperatureDiv.innerText = weatherData.temperature;
+      if (tempUnit) {
+        temperatureDiv.innerText = weatherData.temperature;
+      } else if (!tempUnit) {
+        temperatureDiv.innerText = (weatherData.temperature - 32) / (9/5);
+      }
       conditionsDiv.innerText = weatherData.conditions;
     }
   } else {
     console.error("Please Enter a Valid Location");
+  }
+});
+
+const temperatureButton = document.getElementById("tempBtn");
+let tempUnit = true;
+
+temperatureButton.addEventListener("click", () => {
+  if (tempUnit) {
+    console.log("Celcius")
+    temperatureDiv.innerText = (parseFloat(temperatureDiv.innerText) - 32) / (9/5)
+    tempUnit = false;
+  } else if (!tempUnit) {
+    temperatureDiv.innerText = (parseFloat(temperatureDiv.innerText) * (9/5)) + 32
+    tempUnit = true;
   }
 });
