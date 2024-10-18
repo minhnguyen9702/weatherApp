@@ -55,23 +55,31 @@ searchBtn.addEventListener("click", async () => {
 const temperatureButton = document.getElementById("tempBtn");
 const fahrenheitText = document.getElementById("fahrenheit");
 const celciusText = document.getElementById("celcius");
+
+fahrenheitText.style.fontWeight = "bold";
 let tempUnit = true;
 
 temperatureButton.addEventListener("click", () => {
   if (tempUnit) {
-    temperatureDiv.innerText = (
-      (parseFloat(temperatureDiv.innerText) - 32) /
-      (9 / 5)
-    ).toFixed(1);
     fahrenheitText.style.fontWeight = "normal";
     celciusText.style.fontWeight = "bold";
     tempUnit = false;
+
+    if (temperatureDiv.innerText !== "") {
+      temperatureDiv.innerText = (
+        (parseFloat(temperatureDiv.innerText) - 32) /
+        (9 / 5)
+      ).toFixed(1);
+    }
   } else if (!tempUnit) {
-    temperatureDiv.innerText = (
-      parseFloat(temperatureDiv.innerText * (9 / 5)) + 32
-    ).toFixed(1);
     fahrenheitText.style.fontWeight = "bold";
     celciusText.style.fontWeight = "normal";
     tempUnit = true;
+
+    if (temperatureDiv.innerText !== "") {
+      temperatureDiv.innerText = (
+        parseFloat(temperatureDiv.innerText * (9 / 5)) + 32
+      ).toFixed(1);
+    }
   }
 });
